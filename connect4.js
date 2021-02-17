@@ -9,7 +9,7 @@ const WIDTH = 7;
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
-const board = []; // array of rows, each row is array of cells  (board[y][x])
+let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
@@ -116,12 +116,16 @@ function handleClick(evt) {
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkForTie(board)) {
-    return endGame('Tie Game! Try again!');
+    endGame('Tie Game! Try again!');
+    board = [];
+    resetGame();
   }
 
   // check for win
   if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
+    endGame(`Player ${currPlayer} won!`);
+    board = [];
+    resetGame();
   }
 
 
@@ -130,6 +134,16 @@ function handleClick(evt) {
   // TODO: switch currPlayer 1 <-> 2
   currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
 }
+
+function resetGame() {
+  let gameBoard = document.getElementById('board');
+  while (gameBoard.firstChild) {
+    gameBoard.removeChild(gameBoard.firstChild);
+  }
+  makeBoard(WIDTH, HEIGHT);
+  makeHtmlBoard();
+}
+
 
 function checkForTie(arr) {
   return arr.flat().every(function (val) {
@@ -155,7 +169,7 @@ function checkForWin() {
   }
 
   // TODO: read and understand this code. Add comments to help you.
-
+  // this loops thru the entire board every time it is clicked. Sets winning conditions for horizontal, vertical, and the diagonal axis. These are plugged into the _win function, which checks to see if every cell entered into the function is the same player. If they are, it returns true, and the game is over.
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
