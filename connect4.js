@@ -116,6 +116,7 @@ function handleClick(evt) {
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkForTie(board)) {
+
     endGame('Tie Game! Try again!');
     board = [];
     resetGame();
@@ -123,9 +124,13 @@ function handleClick(evt) {
 
   // check for win
   if (checkForWin()) {
-    endGame(`Player ${currPlayer} won!`);
-    board = [];
-    resetGame();
+    setTimeout(function () {
+      currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
+      endGame(`Player ${currPlayer} won!`);
+      board = [];
+      resetGame();
+    }, 300)
+
   }
 
 
